@@ -62,3 +62,11 @@ app.*.map.json
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Exclude the firebase_options.dart file inside the lib folder
+/lib/firebase_options.dart
+
+# android and ios api keys and ids
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
+/ios/firebase_app_id_file.json
