@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mynotes/firebase_options.dart';
 
 import 'package:mynotes/services/auth_service.dart';
+import 'package:mynotes/widgets/custom_snackbar.dart';
 import 'package:mynotes/widgets/square_tile.dart';
 
 class AuthenticationScreen extends StatefulWidget {
@@ -22,11 +24,41 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   final Future<FirebaseApp> _firebaseApp = Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FocusNode _emailFocus = FocusNode();
+  FocusNode _passwordFocus = FocusNode();
+  Color _emailIconColor = Colors.grey;
+  Color _passwordIconColor = Colors.grey;
 
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
+    _emailFocus.addListener(
+      () {
+        setState(
+          () {
+            if (_emailFocus.hasFocus) {
+              _emailIconColor = Colors.red;
+            } else {
+              _emailIconColor = Colors.grey;
+            }
+          },
+        );
+      },
+    );
+    _passwordFocus.addListener(
+      () {
+        setState(
+          () {
+            if (_passwordFocus.hasFocus) {
+              _passwordIconColor = Colors.red;
+            } else {
+              _passwordIconColor = Colors.grey;
+            }
+          },
+        );
+      },
+    );
     super.initState();
   }
 
@@ -134,6 +166,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                         ],
                                       ),
                                       child: TextField(
+                                        focusNode: _emailFocus,
                                         controller: _email,
                                         cursorColor: Colors.black,
                                         autocorrect: false,
@@ -141,9 +174,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                         keyboardType:
                                             TextInputType.emailAddress,
                                         decoration: InputDecoration(
-                                          suffixIcon: const Icon(
+                                          suffixIcon: Icon(
                                             Icons.email_outlined,
-                                            color: Colors.grey,
+                                            color: _emailIconColor,
                                           ),
                                           hintText: "  name@gmail.com",
                                           hintStyle: GoogleFonts.poppins(
@@ -152,12 +185,19 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             color: Colors
                                                 .grey, // Set the hint text color
                                           ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Colors.red),
+                                          ),
                                           border: InputBorder.none,
                                           contentPadding:
                                               const EdgeInsets.all(10),
                                         ),
                                         style: GoogleFonts.poppins(
                                           color: Colors.black,
+                                          fontSize: 14,
                                         ),
                                       ),
                                     ),
@@ -188,6 +228,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                         ],
                                       ),
                                       child: TextField(
+                                        focusNode: _passwordFocus,
                                         controller: _password,
                                         obscureText: _isPasswordObscured,
                                         cursorColor: Colors.black,
@@ -202,11 +243,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                               });
                                             },
                                             child: Icon(
-                                              _isPasswordObscured
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                              color: Colors.grey,
-                                            ),
+                                                _isPasswordObscured
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                                color: _passwordIconColor),
                                           ),
                                           hintText: "  ****************",
                                           hintStyle: GoogleFonts.poppins(
@@ -215,13 +255,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             color: Colors
                                                 .grey, // Set the hint text color
                                           ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Colors.red),
+                                          ),
                                           border: InputBorder.none, //
                                           contentPadding:
                                               const EdgeInsets.all(10),
                                         ),
                                         style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                        ),
+                                            color: Colors.black, fontSize: 14),
                                       ),
                                     ),
                                     if (_isLogin)
@@ -258,14 +303,96 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                         ),
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                            final email = _email.text;
-                                            final password = _password.text;
+                                            final email = _email.text.trim();
+                                            final password =
+                                                _password.text.trim();
 
-                                            final userCredential =
-                                                await FirebaseAuth.instance
-                                                    .signInWithEmailAndPassword(
-                                                        email: email,
-                                                        password: password);
+                                            try {
+                                              final userCredential =
+                                                  await FirebaseAuth.instance
+                                                      .signInWithEmailAndPassword(
+                                                          email: email,
+                                                          password: password);
+                                            } on FirebaseAuthException catch (e) {
+                                              if (e.code == "user-not-found") {
+                                                Flushbar(
+                                                  message: "User not found.",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else if (e.code ==
+                                                  "wrong-password") {
+                                                Flushbar(
+                                                  message:
+                                                      "Wrong password. Please check your password and try again",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else if (e.code ==
+                                                  "invalid-email") {
+                                                Flushbar(
+                                                  message:
+                                                      "Please enter valid email address",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else if (e.code ==
+                                                  "too-many-requests") {
+                                                Flushbar(
+                                                  message:
+                                                      "Too many sign-in attempts. Please try again later.",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else if (e.code ==
+                                                  "user-disabled") {
+                                                Flushbar(
+                                                  message:
+                                                      "User account is disabled.",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else {
+                                                CustomGradientSnackbar(
+                                                  text: e.code,
+                                                ).show(context);
+                                              }
+                                            }
                                           },
                                           style: ElevatedButton.styleFrom(
                                               backgroundColor:
@@ -294,14 +421,91 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                         ),
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                            final email = _email.text;
-                                            final password = _password.text;
+                                            final email = _email.text.trim();
+                                            final password =
+                                                _password.text.trim();
 
-                                            final userCredential =
-                                                await FirebaseAuth.instance
-                                                    .createUserWithEmailAndPassword(
-                                                        email: email,
-                                                        password: password);
+                                            try {
+                                              final userCredential =
+                                                  await FirebaseAuth.instance
+                                                      .createUserWithEmailAndPassword(
+                                                          email: email,
+                                                          password: password);
+                                            } on FirebaseAuthException catch (e) {
+                                              if (e.code == "invalid-email") {
+                                                Flushbar(
+                                                  message:
+                                                      "Please enter a valid email address.",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else if (e.code ==
+                                                  "email-already-in-use") {
+                                                Flushbar(
+                                                  message:
+                                                      "Email address is already in use.",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else if (e.code ==
+                                                  "too-many-requests") {
+                                                Flushbar(
+                                                  message:
+                                                      "Too many sign-up attempts. Please try again later.",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else if (e.code ==
+                                                  "weak-password") {
+                                                Flushbar(
+                                                  message:
+                                                      "Password must be at least 6 characters long. Please choose a stronger password",
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              } else {
+                                                Flushbar(
+                                                  message: e.code,
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  backgroundGradient:
+                                                      const LinearGradient(
+                                                    colors: [
+                                                      Colors.deepOrange,
+                                                      Colors.black
+                                                    ],
+                                                  ),
+                                                ).show(context);
+                                              }
+                                            }
                                           },
                                           style: ElevatedButton.styleFrom(
                                               backgroundColor:
