@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mynotes/screens/auth_screen.dart';
+import 'package:mynotes/screens/email_verification_screen.dart';
+import 'package:mynotes/screens/tasks_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -24,6 +27,11 @@ class MyNotesApp extends StatelessWidget {
               secondary: Colors.green,
             ),
       ),
+      routes: {
+        "/authentication/": (context) => const AuthenticationScreen(),
+        "/emailverification/": (context) => const EmailVerifictionScreen(),
+        "/tasks/": (context) => const TasksScreen(),
+      },
       home: FutureBuilder(
         future: Firebase.initializeApp(
           options: DefaultFirebaseOptions.currentPlatform,

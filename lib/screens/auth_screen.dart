@@ -2,8 +2,6 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mynotes/screens/email_verification_screen.dart';
-import 'package:mynotes/screens/tasks_screen.dart';
 
 import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/widgets/square_tile.dart';
@@ -291,12 +289,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     onPressed: () async {
                                       final email = _email.text.trim();
                                       final password = _password.text.trim();
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const TasksScreen(),
-                                        ),
-                                      );
 
                                       try {
                                         final userCredential =
@@ -304,6 +296,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 .signInWithEmailAndPassword(
                                                     email: email,
                                                     password: password);
+                                        if (FirebaseAuth.instance.currentUser!
+                                            .emailVerified) {
+                                          Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                                  "/tasks/", (route) => false);
+                                        } else {
+                                          showVerificationDialog(context);
+                                        }
                                       } on FirebaseAuthException catch (e) {
                                         if (e.code == "user-not-found") {
                                           Flushbar(
@@ -426,12 +426,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 .createUserWithEmailAndPassword(
                                                     email: email,
                                                     password: password);
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const EmailVerifictionScreen(),
-                                          ),
-                                        );
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                "/emailverification/",
+                                                (route) => false);
                                       } on FirebaseAuthException catch (e) {
                                         if (e.code == "invalid-email") {
                                           Flushbar(
@@ -592,4 +590,79 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       ),
     );
   }
+}
+
+void showVerificationDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (dialogContext) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      elevation: 0.0,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                "Verify your email",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(
+                child: Text(
+                  "Please verify your email address to continue.",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pushNamedAndRemoveUntil(
+                  "/emailverification/",
+                  (route) => false,
+                );
+              },
+              child: const Text(
+                "Go to verification screen",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 4, 0, 227),
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+          ],
+        ),
+      ),
+    ),
+  );
 }

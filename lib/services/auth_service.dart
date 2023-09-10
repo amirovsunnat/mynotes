@@ -27,9 +27,7 @@ class AuthService {
 
       return userCredential;
     } catch (e) {
-      // Handle any errors that occur during the sign-in process
-      print("Error signing in with Google: $e");
-      return null; // You can return an appropriate value or throw an exception if needed
+      return null;
     }
   }
 }
