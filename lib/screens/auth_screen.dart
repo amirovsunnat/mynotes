@@ -34,7 +34,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         setState(
           () {
             if (_emailFocus.hasFocus) {
-              _emailIconColor = Colors.red;
+              _emailIconColor = Colors.indigo;
             } else {
               _emailIconColor = Colors.grey;
             }
@@ -47,7 +47,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         setState(
           () {
             if (_passwordFocus.hasFocus) {
-              _passwordIconColor = Colors.red;
+              _passwordIconColor = Colors.indigo;
             } else {
               _passwordIconColor = Colors.grey;
             }
@@ -74,16 +74,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
             Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.orange,
-                    Colors.yellow,
-                  ], // Define your gradient colors
-                ),
-              ),
+              decoration: const BoxDecoration(color: Colors.indigoAccent),
             ),
             Align(
               alignment: Alignment.topCenter,
@@ -177,8 +168,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
+                                      borderSide: const BorderSide(
+                                          color: Colors.indigo),
                                     ),
                                     border: InputBorder.none,
                                     contentPadding: const EdgeInsets.all(10),
@@ -245,8 +236,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                          const BorderSide(color: Colors.red),
+                                      borderSide: const BorderSide(
+                                          color: Colors.indigo),
                                     ),
                                     border: InputBorder.none, //
                                     contentPadding: const EdgeInsets.all(10),
@@ -280,8 +271,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                         BorderRadius.all(Radius.circular(5)),
                                     gradient: LinearGradient(
                                       colors: [
-                                        Colors.deepOrange,
-                                        Colors.yellow,
+                                        Colors.indigo,
+                                        Colors.blue,
                                       ],
                                     ),
                                   ),
@@ -310,13 +301,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             message: "User not found.",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else if (e.code == "wrong-password") {
                                           Flushbar(
@@ -324,13 +310,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "Wrong password. Please check your password and try again",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else if (e.code == "invalid-email") {
                                           Flushbar(
@@ -338,13 +319,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "Please enter valid email address",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else if (e.code ==
                                             "too-many-requests") {
@@ -353,13 +329,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "Too many sign-in attempts. Please try again later.",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else if (e.code == "user-disabled") {
                                           Flushbar(
@@ -367,26 +338,25 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "User account is disabled.",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (e.code == "channel-error") {
+                                          Flushbar(
+                                            message:
+                                                "Please fill the email and password fields.",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else {
                                           Flushbar(
                                             message: e.code,
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         }
                                       }
@@ -410,8 +380,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                         BorderRadius.all(Radius.circular(5)),
                                     gradient: LinearGradient(
                                       colors: [
-                                        Colors.deepOrange,
-                                        Colors.yellow,
+                                        Colors.indigo,
+                                        Colors.blue,
                                       ],
                                     ),
                                   ),
@@ -437,13 +407,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "Please enter a valid email address.",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else if (e.code ==
                                             "email-already-in-use") {
@@ -452,13 +417,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "Email address is already in use.",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else if (e.code ==
                                             "too-many-requests") {
@@ -467,13 +427,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "Too many sign-up attempts. Please try again later.",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else if (e.code == "weak-password") {
                                           Flushbar(
@@ -481,26 +436,25 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 "Password must be at least 6 characters long. Please choose a stronger password",
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (e.code == "channel-error") {
+                                          Flushbar(
+                                            message:
+                                                "Please fill the email and password fields.",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         } else {
                                           Flushbar(
                                             message: e.code,
                                             duration:
                                                 const Duration(seconds: 3),
-                                            backgroundGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                Colors.deepOrange,
-                                                Colors.black
-                                              ],
-                                            ),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
                                           ).show(context);
                                         }
                                       }
@@ -540,11 +494,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           text:
                                               _isLogin ? 'Sign Up' : "Sign In",
                                           style: GoogleFonts.poppins(
-                                            color: const Color.fromARGB(
-                                                255,
-                                                216,
-                                                72,
-                                                0), // Set your desired text color for "Sign Up"
+                                            color: Colors
+                                                .indigo, // Set your desired text color for "Sign Up"
                                           ),
                                         ),
                                       ],

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mynotes/screens/auth_screen.dart';
 import 'package:mynotes/screens/email_verification_screen.dart';
-import 'package:mynotes/screens/tasks_screen.dart';
+import 'package:mynotes/screens/notes_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -29,8 +29,8 @@ class MyNotesApp extends StatelessWidget {
       ),
       routes: {
         "/authentication/": (context) => const AuthenticationScreen(),
-        "/emailverification/": (context) => const EmailVerifictionScreen(),
-        "/tasks/": (context) => const TasksScreen(),
+        "/emailverification/": (context) => const EmailVerificationScreen(),
+        "/tasks/": (context) => const NotesScreen(),
       },
       home: FutureBuilder(
         future: Firebase.initializeApp(
@@ -38,21 +38,18 @@ class MyNotesApp extends StatelessWidget {
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            final user = FirebaseAuth.instance.currentUser;
+            if (user != null) {
+              if (user.emailVerified) {
+                return const NotesScreen();
+              }
+            }
             return const AuthenticationScreen();
           } else {
             return Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.orange,
-                    Colors.yellow,
-                  ], // Define your gradient colors
-                ),
-              ),
+              decoration: const BoxDecoration(color: Colors.indigoAccent),
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

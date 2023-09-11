@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
-class EmailVerifictionScreen extends StatefulWidget {
-  const EmailVerifictionScreen({super.key});
+class EmailVerificationScreen extends StatefulWidget {
+  const EmailVerificationScreen({super.key});
 
   @override
-  State<EmailVerifictionScreen> createState() => _EmailVerifictionScreenState();
+  State<EmailVerificationScreen> createState() =>
+      _EmailVerificationScreenState();
 }
 
-class _EmailVerifictionScreenState extends State<EmailVerifictionScreen> {
+class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   bool _isEmailVerified = false;
 
   @override
@@ -21,16 +22,7 @@ class _EmailVerifictionScreenState extends State<EmailVerifictionScreen> {
           Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.orangeAccent,
-                  Color.fromARGB(197, 255, 230, 0),
-                ], // Define your gradient colors
-              ),
-            ),
+            decoration: const BoxDecoration(color: Colors.white),
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -51,7 +43,9 @@ class _EmailVerifictionScreenState extends State<EmailVerifictionScreen> {
                             ? "You verified your email. You can log in to your account"
                             : "Verify your email",
                         style: GoogleFonts.poppins(
-                            fontSize: 24, color: Colors.white),
+                          fontSize: 24,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     Lottie.asset("assets/images/animated_arrow.json",
@@ -62,8 +56,8 @@ class _EmailVerifictionScreenState extends State<EmailVerifictionScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                         gradient: LinearGradient(
                           colors: [
-                            Colors.deepOrange,
-                            Colors.yellow,
+                            Colors.indigo,
+                            Colors.blue,
                           ],
                         ),
                       ),
@@ -72,19 +66,23 @@ class _EmailVerifictionScreenState extends State<EmailVerifictionScreen> {
                           final user = FirebaseAuth.instance.currentUser;
 
                           await user!.sendEmailVerification();
+                          await user.reload(); // Reload the user data
                           if (user.emailVerified) {
                             setState(() {
                               _isEmailVerified = true;
                             });
+                            Navigator.of(context).pop();
                           }
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent),
                         child: Text(
-                          _isEmailVerified ? "Sign In" : "Send Verifacation",
+                          _isEmailVerified ? "Sign In" : "Send Verification",
                           style: GoogleFonts.poppins(
-                              fontSize: 16, fontWeight: FontWeight.w700),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
