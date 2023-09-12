@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mynotes/constants/routes.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({super.key});
@@ -35,7 +36,7 @@ class _NotesScreenState extends State<NotesScreen> {
                   if (isSigningOut) {
                     await FirebaseAuth.instance.signOut();
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/authentication/", (route) => false);
+                        authenticationRoute, (route) => false);
                   }
               }
             },
