@@ -282,16 +282,15 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       final password = _password.text.trim();
 
                                       try {
-                                        final userCredential =
-                                            await FirebaseAuth.instance
-                                                .signInWithEmailAndPassword(
-                                                    email: email,
-                                                    password: password);
+                                        await FirebaseAuth.instance
+                                            .signInWithEmailAndPassword(
+                                                email: email,
+                                                password: password);
                                         if (FirebaseAuth.instance.currentUser!
                                             .emailVerified) {
                                           Navigator.of(context)
                                               .pushNamedAndRemoveUntil(
-                                                  "/tasks/", (route) => false);
+                                                  "/notes/", (route) => false);
                                         } else {
                                           showVerificationDialog(context);
                                         }
@@ -391,11 +390,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       final password = _password.text.trim();
 
                                       try {
-                                        final userCredential =
-                                            await FirebaseAuth.instance
-                                                .createUserWithEmailAndPassword(
-                                                    email: email,
-                                                    password: password);
+                                        await FirebaseAuth.instance
+                                            .createUserWithEmailAndPassword(
+                                                email: email,
+                                                password: password);
                                         Navigator.of(context)
                                             .pushNamedAndRemoveUntil(
                                                 "/emailverification/",

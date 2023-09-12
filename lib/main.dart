@@ -30,7 +30,7 @@ class MyNotesApp extends StatelessWidget {
       routes: {
         "/authentication/": (context) => const AuthenticationScreen(),
         "/emailverification/": (context) => const EmailVerificationScreen(),
-        "/tasks/": (context) => const NotesScreen(),
+        "/notes/": (context) => const NotesScreen(),
       },
       home: FutureBuilder(
         future: Firebase.initializeApp(
