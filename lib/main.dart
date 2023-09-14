@@ -49,7 +49,7 @@ class MyNotesApp extends StatelessWidget {
             return Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: const BoxDecoration(color: Colors.indigoAccent),
+              decoration: const BoxDecoration(color: Colors.white),
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

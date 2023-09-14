@@ -59,19 +59,28 @@ Future<bool> showSignOutDialog(BuildContext context) {
           "Sign Out",
           style: GoogleFonts.poppins(),
         ),
-        content: Text("Do you want to sign out?", style: GoogleFonts.poppins()),
+        content: Text(
+          "Do you want to sign out?",
+          style: GoogleFonts.poppins(),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(false);
             },
-            child: Text("No", style: GoogleFonts.poppins()),
+            child: Text(
+              "No",
+              style: GoogleFonts.poppins(),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(true);
             },
-            child: Text("Yes", style: GoogleFonts.poppins()),
+            child: Text(
+              "Yes",
+              style: GoogleFonts.poppins(),
+            ),
           ),
         ],
       );

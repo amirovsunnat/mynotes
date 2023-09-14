@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mynotes/constants/routes.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -12,11 +13,25 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
-  bool _isEmailVerified = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Email Verification",
+          style: GoogleFonts.poppins(),
+        ),
+        backgroundColor: Colors.indigo,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              authenticationRoute,
+              (route) => false,
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+      ),
       body: Stack(
         children: [
           Container(
@@ -27,7 +42,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.only(top: 80, left: 30, right: 30),
+              padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -35,21 +50,29 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       "assets/images/verify_email_animation.json",
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 10,
                     ),
                     Center(
                       child: Text(
-                        _isEmailVerified
-                            ? "You verified your email. You can log in to your account"
-                            : "Verify your email",
+                        "We have sent you email verification link. Please verify your email.",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          color: Colors.black,
-                        ),
+                            fontSize: 18, color: Colors.black),
+                        textAlign: TextAlign.center,
                       ),
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "If you did not get the link. You can send it here.",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     Lottie.asset("assets/images/animated_arrow.json",
-                        height: 150),
+                        height: 80),
                     Container(
                       width: double.infinity,
                       decoration: const BoxDecoration(
@@ -66,19 +89,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                           final user = FirebaseAuth.instance.currentUser;
 
                           await user!.sendEmailVerification();
-                          await user.reload(); // Reload the user data
-                          if (user.emailVerified) {
-                            setState(() {
-                              _isEmailVerified = true;
-                            });
-                            Navigator.of(context).pop();
-                          }
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent),
                         child: Text(
-                          _isEmailVerified ? "Sign In" : "Send Verification",
+                          "Send Verification",
                           style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,

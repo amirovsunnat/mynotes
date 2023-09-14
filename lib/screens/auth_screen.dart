@@ -293,7 +293,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                               .pushNamedAndRemoveUntil(
                                                   notesRoute, (route) => false);
                                         } else {
-                                          showVerificationDialog(context);
+                                          final isGoingToVerification =
+                                              await showVerificationDialog(
+                                                  context);
+                                          if (isGoingToVerification) {
+                                            await FirebaseAuth
+                                                .instance.currentUser!
+                                                .sendEmailVerification();
+                                            Navigator.of(context)
+                                                .pushNamedAndRemoveUntil(
+                                                    emailVerificationRoute,
+                                                    (route) => false);
+                                          }
                                         }
                                       } on FirebaseAuthException catch (e) {
                                         if (e.code == "user-not-found") {
@@ -395,6 +406,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             .createUserWithEmailAndPassword(
                                                 email: email,
                                                 password: password);
+                                        await FirebaseAuth.instance.currentUser!
+                                            .sendEmailVerification();
                                         Navigator.of(context)
                                             .pushNamedAndRemoveUntil(
                                                 emailVerificationRoute,
@@ -542,8 +555,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   }
 }
 
-void showVerificationDialog(BuildContext context) {
-  showDialog(
+Future<bool> showVerificationDialog(BuildContext context) {
+  return showDialog<bool>(
     context: context,
     builder: (dialogContext) => Dialog(
       shape: RoundedRectangleBorder(
@@ -582,11 +595,10 @@ void showVerificationDialog(BuildContext context) {
             ),
             const SizedBox(height: 20.0),
             TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pushNamedAndRemoveUntil(
-                  emailVerificationRoute,
-                  (route) => false,
-                );
+              onPressed: () async {
+                Navigator.of(dialogContext).pop(true);
+                await FirebaseAuth.instance.currentUser!
+                    .sendEmailVerification();
               },
               child: const Text(
                 "Go to verification screen",
@@ -599,7 +611,7 @@ void showVerificationDialog(BuildContext context) {
             const SizedBox(height: 10.0),
             TextButton(
               onPressed: () {
-                Navigator.of(dialogContext).pop();
+                Navigator.of(dialogContext).pop(false);
               },
               child: const Text(
                 "Cancel",
@@ -614,5 +626,5 @@ void showVerificationDialog(BuildContext context) {
         ),
       ),
     ),
-  );
+  ).then((value) => value ?? false);
 }
