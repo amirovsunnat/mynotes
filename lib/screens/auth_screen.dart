@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mynotes/constants/routes.dart';
 
-import 'package:mynotes/services/auth_service.dart';
 import 'package:mynotes/widgets/square_tile.dart';
 
 class AuthenticationScreen extends StatefulWidget {
@@ -527,10 +526,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     SquareTile(
-                                        onTap: () {
-                                          return AuthService()
-                                              .signInWithGoogle();
-                                        },
+                                        onTap: () {},
                                         imagePath: "assets/images/google.png"),
                                     SquareTile(
                                         onTap: () {},
