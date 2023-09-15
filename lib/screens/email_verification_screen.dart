@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -86,9 +86,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: () async {
-                          final user = FirebaseAuth.instance.currentUser;
+                          AuthService.firebase().currentUser;
 
-                          await user!.sendEmailVerification();
+                          await AuthService.firebase().sendEmailVerification();
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,

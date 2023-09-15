@@ -1,7 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/enums/menu_action.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({super.key});
@@ -9,8 +11,6 @@ class NotesScreen extends StatefulWidget {
   @override
   State<NotesScreen> createState() => _NotesScreenState();
 }
-
-enum MenuActions { signout }
 
 class _NotesScreenState extends State<NotesScreen> {
   @override
@@ -34,7 +34,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 case (MenuActions.signout):
                   final isSigningOut = await showSignOutDialog(context);
                   if (isSigningOut) {
-                    await FirebaseAuth.instance.signOut();
+                    await AuthService.firebase().logOut();
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         authenticationRoute, (route) => false);
                   }

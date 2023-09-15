@@ -1,8 +1,9 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 
 import 'package:mynotes/widgets/square_tile.dart';
 
@@ -282,12 +283,13 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       final password = _password.text.trim();
 
                                       try {
-                                        await FirebaseAuth.instance
-                                            .signInWithEmailAndPassword(
-                                                email: email,
-                                                password: password);
-                                        if (FirebaseAuth.instance.currentUser!
-                                            .emailVerified) {
+                                        await AuthService.firebase().logIn(
+                                          email: email,
+                                          password: password,
+                                        );
+                                        if (AuthService.firebase()
+                                            .currentUser!
+                                            .isEmailVerified) {
                                           Navigator.of(context)
                                               .pushNamedAndRemoveUntil(
                                                   notesRoute, (route) => false);
@@ -296,8 +298,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                               await showVerificationDialog(
                                                   context);
                                           if (isGoingToVerification) {
-                                            await FirebaseAuth
-                                                .instance.currentUser!
+                                            await AuthService.firebase()
                                                 .sendEmailVerification();
                                             Navigator.of(context)
                                                 .pushNamedAndRemoveUntil(
@@ -305,70 +306,59 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                     (route) => false);
                                           }
                                         }
-                                      } on FirebaseAuthException catch (e) {
-                                        if (e.code == "user-not-found") {
-                                          Flushbar(
-                                            message: "User not found.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code == "wrong-password") {
-                                          Flushbar(
-                                            message:
-                                                "Wrong password. Please check your password and try again",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code == "invalid-email") {
-                                          Flushbar(
-                                            message:
-                                                "Please enter valid email address",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code ==
-                                            "too-many-requests") {
-                                          Flushbar(
-                                            message:
-                                                "Too many sign-in attempts. Please try again later.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code == "user-disabled") {
-                                          Flushbar(
-                                            message:
-                                                "User account is disabled.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code == "channel-error") {
-                                          Flushbar(
-                                            message:
-                                                "Please fill the email and password fields.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else {
-                                          Flushbar(
-                                            message: e.code,
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        }
+                                      } on UserNotFoundAuthException {
+                                        Flushbar(
+                                          message: "User not found.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on WrongPasswordAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Wrong password. Please check your password and try again",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on InvalidEmailAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Please enter valid email address",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on TooManyRequestsAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Too many sign-in attempts. Please try again later.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on UserDisabledAuthException {
+                                        Flushbar(
+                                          message: "User account is disabled.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on ChannelErrorAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Please fill the email and password fields.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on GenericAuthExceptions {
+                                        Flushbar(
+                                          message: "Authentication error.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -401,73 +391,63 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       final password = _password.text.trim();
 
                                       try {
-                                        await FirebaseAuth.instance
-                                            .createUserWithEmailAndPassword(
-                                                email: email,
-                                                password: password);
-                                        await FirebaseAuth.instance.currentUser!
+                                        await AuthService.firebase().createUser(
+                                          email: email,
+                                          password: password,
+                                        );
+                                        await AuthService.firebase()
                                             .sendEmailVerification();
                                         Navigator.of(context)
                                             .pushNamedAndRemoveUntil(
                                                 emailVerificationRoute,
                                                 (route) => false);
-                                      } on FirebaseAuthException catch (e) {
-                                        if (e.code == "invalid-email") {
-                                          Flushbar(
-                                            message:
-                                                "Please enter a valid email address.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code ==
-                                            "email-already-in-use") {
-                                          Flushbar(
-                                            message:
-                                                "Email address is already in use.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code ==
-                                            "too-many-requests") {
-                                          Flushbar(
-                                            message:
-                                                "Too many sign-up attempts. Please try again later.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code == "weak-password") {
-                                          Flushbar(
-                                            message:
-                                                "Password must be at least 6 characters long. Please choose a stronger password",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else if (e.code == "channel-error") {
-                                          Flushbar(
-                                            message:
-                                                "Please fill the email and password fields.",
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        } else {
-                                          Flushbar(
-                                            message: e.code,
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            messageColor: Colors.white,
-                                            backgroundColor: Colors.indigo,
-                                          ).show(context);
-                                        }
+                                      } on InvalidEmailAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Please enter a valid email address.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on EmailAlreadyInUseAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Email address is already in use.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on TooManyRequestsAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Too many sign-up attempts. Please try again later.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on WeakPasswordAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Password must be at least 6 characters long. Please choose a stronger password",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on ChannelErrorAuthException {
+                                        Flushbar(
+                                          message:
+                                              "Please fill the email and password fields.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
+                                      } on GenericAuthExceptions {
+                                        Flushbar(
+                                          message: "Authentication error.",
+                                          duration: const Duration(seconds: 3),
+                                          messageColor: Colors.white,
+                                          backgroundColor: Colors.indigo,
+                                        ).show(context);
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -593,8 +573,7 @@ Future<bool> showVerificationDialog(BuildContext context) {
             TextButton(
               onPressed: () async {
                 Navigator.of(dialogContext).pop(true);
-                await FirebaseAuth.instance.currentUser!
-                    .sendEmailVerification();
+                await AuthService.firebase().sendEmailVerification();
               },
               child: const Text(
                 "Go to verification screen",
