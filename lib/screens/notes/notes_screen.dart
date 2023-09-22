@@ -111,12 +111,12 @@ class _NotesScreenState extends State<NotesScreen> {
                         ],
                       );
                     default:
-                      return const CircularProgressIndicator();
+                      return const Center(child: CircularProgressIndicator());
                   }
                 },
               );
             default:
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
           }
         },
       ),
