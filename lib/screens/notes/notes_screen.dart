@@ -72,7 +72,44 @@ class _NotesScreenState extends State<NotesScreen> {
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
-                      return const Text("Waiting for all notes...");
+                      return Column(
+                        children: [
+                          const Text("Waiting for all notes..."),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.indigo,
+                                        Colors.blueAccent
+                                      ],
+                                    ),
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed(
+                                        newNoteRoute,
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
                     default:
                       return const CircularProgressIndicator();
                   }

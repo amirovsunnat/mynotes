@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mynotes/screens/notes/new_note.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/screens/auth_screen.dart';
 import 'package:mynotes/screens/email_verification_screen.dart';
-import 'package:mynotes/screens/notes_screen.dart';
+import 'package:mynotes/screens/notes/notes_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class MyNotesApp extends StatelessWidget {
         authenticationRoute: (context) => const AuthenticationScreen(),
         emailVerificationRoute: (context) => const EmailVerificationScreen(),
         notesRoute: (context) => const NotesScreen(),
+        newNoteRoute: (context) => const NewNotesScreen(),
       },
       home: FutureBuilder(
         future: AuthService.firebase().initialize(),
