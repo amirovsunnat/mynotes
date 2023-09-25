@@ -75,6 +75,11 @@ class _NotesScreenState extends State<NotesScreen> {
                           children: [
                             Expanded(
                               child: NotesListView(
+                                onTap: (note) {
+                                  Navigator.of(context).pushNamed(
+                                      createOrUpdateNoteRoute,
+                                      arguments: note);
+                                },
                                 notes: allNotes,
                                 onDeleteNote: (note) async {
                                   await _notesService.deleteNote(id: note.id);
@@ -100,7 +105,7 @@ class _NotesScreenState extends State<NotesScreen> {
                                   child: IconButton(
                                     onPressed: () {
                                       Navigator.of(context).pushNamed(
-                                        newNoteRoute,
+                                        createOrUpdateNoteRoute,
                                       );
                                     },
                                     icon: const Icon(

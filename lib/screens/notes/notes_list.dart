@@ -5,16 +5,20 @@ import 'package:mynotes/services/crud/notes_service.dart';
 
 import '../../utilities/dialogs/delete_dialog.dart';
 
-typedef DeleteNoteCallBack = void Function(DatabaseNote note);
+typedef NoteCallBack = void Function(DatabaseNote note);
 final currentTime = DateTime.now();
 final formattedDate = DateFormat('MMMM dd, yyyy').format(currentTime);
 
 class NotesListView extends StatelessWidget {
   final List<DatabaseNote> notes;
-  final DeleteNoteCallBack onDeleteNote;
+  final NoteCallBack onDeleteNote;
+  final NoteCallBack onTap;
 
   const NotesListView(
-      {super.key, required this.notes, required this.onDeleteNote});
+      {super.key,
+      required this.notes,
+      required this.onDeleteNote,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,9 @@ class NotesListView extends StatelessWidget {
           elevation: 2,
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
+            onTap: () {
+              onTap(note);
+            },
             contentPadding: const EdgeInsets.all(16),
             title: Text(
               note.text,

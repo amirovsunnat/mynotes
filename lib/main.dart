@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mynotes/screens/notes/new_note.dart';
+import 'package:mynotes/screens/notes/create_update_note.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 
 import 'package:mynotes/constants/routes.dart';
@@ -30,7 +30,7 @@ class MyNotesApp extends StatelessWidget {
         authenticationRoute: (context) => const AuthenticationScreen(),
         emailVerificationRoute: (context) => const EmailVerificationScreen(),
         notesRoute: (context) => const NotesScreen(),
-        newNoteRoute: (context) => const NewNotesScreen(),
+        createOrUpdateNoteRoute: (context) => const CreateUpdateNoteScreen(),
       },
       home: FutureBuilder(
         future: AuthService.firebase().initialize(),
