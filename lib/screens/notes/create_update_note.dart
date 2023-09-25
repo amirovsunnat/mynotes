@@ -107,10 +107,12 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
               return Padding(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
+                  style: GoogleFonts.poppins(fontSize: 18),
                   controller: _textController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
+                      hintStyle: GoogleFonts.poppins(fontSize: 20),
                       border: InputBorder.none,
                       hintText: "Start typing your note..."),
                 ),

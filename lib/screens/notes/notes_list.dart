@@ -40,11 +40,11 @@ class NotesListView extends StatelessWidget {
               softWrap: true,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.poppins(
-                  fontSize: 16, fontWeight: FontWeight.bold),
+                  fontSize: 14, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Created at: $formattedDate', // Format the current time
-              style: GoogleFonts.poppins(fontSize: 14),
+              style: GoogleFonts.poppins(fontSize: 10),
             ),
             trailing: IconButton(
               icon: const Icon(
