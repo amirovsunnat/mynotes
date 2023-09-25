@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/enums/menu_action.dart';
+import 'package:mynotes/screens/notes/notes_list.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/crud/notes_service.dart';
+
+import '../../utilities/dialogs/sign_out_dialog.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({super.key});
@@ -27,8 +28,6 @@ class _NotesScreenState extends State<NotesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentTime = DateTime.now();
-    final formattedDate = DateFormat('MMMM dd, yyyy').format(currentTime);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Notes"),
@@ -75,47 +74,10 @@ class _NotesScreenState extends State<NotesScreen> {
                         return Column(
                           children: [
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: allNotes.length,
-                                itemBuilder: (context, index) {
-                                  final note = allNotes[index];
-                                  return Card(
-                                    elevation: 2,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 16),
-                                    child: ListTile(
-                                      contentPadding: const EdgeInsets.all(16),
-                                      title: Text(
-                                        note.text,
-                                        maxLines: 1,
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: Text(
-                                        'Created at: $formattedDate', // Format the current time
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 14),
-                                      ),
-                                      trailing: IconButton(
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.indigo,
-                                        ),
-                                        onPressed: () {},
-                                      ),
-                                    ),
-                                  );
-                                  // ListTile(
-                                  //   title: Text(
-                                  //     note.text,
-                                  //     maxLines: 1,
-                                  //     softWrap: true,
-                                  //     overflow: TextOverflow.ellipsis,
-                                  //   ),
-                                  // );
+                              child: NotesListView(
+                                notes: allNotes,
+                                onDeleteNote: (note) async {
+                                  await _notesService.deleteNote(id: note.id);
                                 },
                               ),
                             ),
@@ -170,42 +132,4 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
     );
   }
-}
-
-Future<bool> showSignOutDialog(BuildContext context) {
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: Text(
-          "Sign Out",
-          style: GoogleFonts.poppins(),
-        ),
-        content: Text(
-          "Do you want to sign out?",
-          style: GoogleFonts.poppins(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: Text(
-              "No",
-              style: GoogleFonts.poppins(),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-            child: Text(
-              "Yes",
-              style: GoogleFonts.poppins(),
-            ),
-          ),
-        ],
-      );
-    },
-  ).then((value) => value ?? false);
 }
