@@ -172,18 +172,20 @@ class NotesService {
     }
 
     const text = "";
+    final currentTimeMillis = DateTime.now().millisecondsSinceEpoch;
     // create the note
     final noteId = await db.insert(noteTable, {
       userIdColumn: owner.id,
       textColumn: text,
       isSyncedWithCloudColumn: 1,
+      'created_at': currentTimeMillis,
     });
     final note = DatabaseNote(
-      id: noteId,
-      userId: owner.id,
-      text: text,
-      isSyncedWithCloud: true,
-    );
+        id: noteId,
+        userId: owner.id,
+        text: text,
+        isSyncedWithCloud: true,
+        createdAt: currentTimeMillis);
 
     _notes.add(note);
     _notesStreamController.add(_notes);
@@ -233,6 +235,7 @@ class NotesService {
       _notes.removeWhere((note) => note.id == id);
       _notes.add(note);
       _notesStreamController.add(_notes);
+      final createdAt = note.createdAt;
       return note;
     }
   }
@@ -306,12 +309,14 @@ class DatabaseNote {
   final int userId;
   final String text;
   final bool isSyncedWithCloud;
+  final int createdAt;
 
   DatabaseNote({
     required this.id,
     required this.userId,
     required this.text,
     required this.isSyncedWithCloud,
+    required this.createdAt,
   });
 
   DatabaseNote.fromRow(Map<String, Object?> map)
@@ -319,7 +324,8 @@ class DatabaseNote {
         userId = map[userIdColumn] as int,
         text = map[textColumn] as String,
         isSyncedWithCloud =
-            (map[isSyncedWithCloudColumn] as int) == 1 ? true : false;
+            (map[isSyncedWithCloudColumn] as int) == 1 ? true : false,
+        createdAt = map['created_at'] as int;
 
   @override
   String toString() =>
@@ -340,14 +346,15 @@ const emailColumn = "email";
 const userIdColumn = "user_id";
 const textColumn = "text";
 const isSyncedWithCloudColumn = "is_synced_with_cloud";
-const createNoteTable = '''CREATE TABLE IF NOT EXISTS"note" (
-	      "id"	INTEGER NOT NULL,
-	      "user_id"	INTEGER NOT NULL,
-	      "text"	TEXT,
-	      "is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
-	      PRIMARY KEY("id" AUTOINCREMENT),
-	      FOREIGN KEY("user_id") REFERENCES "user"("id")
-        );''';
+const createNoteTable = '''CREATE TABLE IF NOT EXISTS "note" (
+  "id" INTEGER NOT NULL,
+  "user_id" INTEGER NOT NULL,
+  "text" TEXT,
+  "is_synced_with_cloud" INTEGER NOT NULL DEFAULT 0,
+  "created_at" INTEGER NOT NULL,
+  PRIMARY KEY("id" AUTOINCREMENT),
+  FOREIGN KEY("user_id") REFERENCES "user"("id")
+);''';
 const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
 	      "id"	INTEGER NOT NULL,
 	      "email"	TEXT NOT NULL UNIQUE,
