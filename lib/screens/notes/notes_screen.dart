@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/enums/menu_action.dart';
 import 'package:mynotes/screens/notes/notes_list.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
-import 'package:mynotes/services/crud/notes_service.dart';
+import 'package:mynotes/services/cloud/cloud_note.dart';
+import 'package:mynotes/services/cloud/firebase_cloud_storage.dart';
 
 import '../../utilities/dialogs/sign_out_dialog.dart';
 
@@ -16,13 +16,12 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  late final NotesService _notesService;
-  String get userEmail => AuthService.firebase().currentUser!.email;
+  late final FirebaseCloudStorage _notesService;
+  String get userId => AuthService.firebase().currentUser!.id;
 
   @override
   void initState() {
-    _notesService = NotesService();
-    _notesService.open();
+    _notesService = FirebaseCloudStorage();
     super.initState();
   }
 
@@ -56,80 +55,66 @@ class _NotesScreenState extends State<NotesScreen> {
           )
         ],
       ),
-      body: FutureBuilder(
-        future: _notesService.getOrCreateUser(
-          email: userEmail,
-        ),
+      body: StreamBuilder(
+        stream: _notesService.allNotes(ownerUserId: userId),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return StreamBuilder(
-                stream: _notesService.allNotes,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      if (snapshot.hasData) {
-                        final allNotes = snapshot.data as List<DatabaseNote>;
-                        return Column(
-                          children: [
-                            Expanded(
-                              child: NotesListView(
-                                onTap: (note) {
-                                  Navigator.of(context).pushNamed(
-                                      createOrUpdateNoteRoute,
-                                      arguments: note);
-                                },
-                                notes: allNotes,
-                                onDeleteNote: (note) async {
-                                  await _notesService.deleteNote(id: note.id);
-                                },
-                              ),
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              if (snapshot.hasData) {
+                final allNotes = snapshot.data as Iterable<CloudNote>;
+                return Column(
+                  children: [
+                    Expanded(
+                      child: NotesListView(
+                        onTap: (note) {
+                          Navigator.of(context).pushNamed(
+                              createOrUpdateNoteRoute,
+                              arguments: note);
+                        },
+                        notes: allNotes,
+                        onDeleteNote: (note) async {
+                          await _notesService.deleteNote(
+                              documentId: note.documentId);
+                        },
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [Colors.indigo, Colors.blueAccent],
                             ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Container(
-                                  height: 60,
-                                  width: 60,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.indigo,
-                                        Colors.blueAccent
-                                      ],
-                                    ),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pushNamed(
-                                        createOrUpdateNoteRoute,
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pushNamed(
+                                createOrUpdateNoteRoute,
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 40,
                             ),
-                          ],
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-                    default:
-                      return const Center(child: CircularProgressIndicator());
-                  }
-                },
-              );
             default:
               return const Center(child: CircularProgressIndicator());
           }
