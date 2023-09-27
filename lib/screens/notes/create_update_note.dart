@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/utilities/dialogs/cannot_share_empty_note_dialog.dart';
 import 'package:mynotes/utilities/generics/get_arguments.dart';
 import 'package:mynotes/services/cloud/cloud_note.dart';
 import 'package:mynotes/services/cloud/firebase_cloud_storage.dart';
+import 'package:share_extend/share_extend.dart';
 
 class CreateUpdateNoteScreen extends StatefulWidget {
   const CreateUpdateNoteScreen({super.key});
@@ -54,7 +56,6 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
       return existingNote;
     }
     final currentUser = AuthService.firebase().currentUser!;
-    final email = currentUser.email;
     final userId = currentUser.id;
     final newNote = await _notesService.createNewNote(ownerUserId: userId);
     _note = newNote;
@@ -101,6 +102,19 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
           "Add New Notes",
           style: GoogleFonts.poppins(),
         ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final text = _textController.text;
+              if (_note == null || text.isEmpty) {
+                await showCannotShareEmptyNoteDialog(context);
+              } else {
+                ShareExtend.share(text, "text", sharePanelTitle: "My note");
+              }
+            },
+            icon: const Icon(Icons.share),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: createOrGetExistingNote(context),
@@ -109,7 +123,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
             case ConnectionState.done:
               _setupTextControllerListener();
               return Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: TextField(
                   style: GoogleFonts.poppins(fontSize: 18),
                   controller: _textController,

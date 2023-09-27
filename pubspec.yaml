@@ -39,7 +39,7 @@ dependencies:
   firebase_auth: ^4.9.0
   cloud_firestore: ^4.9.1
   firebase_analytics: ^10.4.5
-  google_fonts: ^5.1.0
+  google_fonts: ^6.1.0
   google_sign_in: ^6.1.5
   another_flushbar: ^1.12.30
   lottie: ^2.6.0
@@ -47,6 +47,7 @@ dependencies:
   path_provider: ^2.1.1
   path: ^1.8.3
   intl: ^0.18.1
+  share_extend: "^2.0.0"
 
 dev_dependencies:
   flutter_test:
