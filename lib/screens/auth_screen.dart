@@ -1,9 +1,12 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth/auth_exceptions.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
+import 'package:mynotes/services/auth/bloc/auth_event.dart';
 
 import 'package:mynotes/widgets/square_tile.dart';
 
@@ -283,29 +286,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       final password = _password.text.trim();
 
                                       try {
-                                        await AuthService.firebase().logIn(
-                                          email: email,
-                                          password: password,
-                                        );
-                                        if (AuthService.firebase()
-                                            .currentUser!
-                                            .isEmailVerified) {
-                                          Navigator.of(context)
-                                              .pushNamedAndRemoveUntil(
-                                                  notesRoute, (route) => false);
-                                        } else {
-                                          final isGoingToVerification =
-                                              await showVerificationDialog(
-                                                  context);
-                                          if (isGoingToVerification) {
-                                            await AuthService.firebase()
-                                                .sendEmailVerification();
-                                            Navigator.of(context)
-                                                .pushNamedAndRemoveUntil(
-                                                    emailVerificationRoute,
-                                                    (route) => false);
-                                          }
-                                        }
+                                        context.read<AuthBloc>().add(
+                                              AuthEventLogIn(
+                                                email,
+                                                password,
+                                              ),
+                                            );
                                       } on UserNotFoundAuthException {
                                         Flushbar(
                                           message: "User not found.",

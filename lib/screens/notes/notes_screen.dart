@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/enums/menu_action.dart';
 import 'package:mynotes/screens/notes/notes_list.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
+import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/cloud/cloud_note.dart';
 import 'package:mynotes/services/cloud/firebase_cloud_storage.dart';
 
@@ -46,9 +49,10 @@ class _NotesScreenState extends State<NotesScreen> {
                 case (MenuActions.signout):
                   final isSigningOut = await showSignOutDialog(context);
                   if (isSigningOut) {
-                    await AuthService.firebase().logOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        authenticationRoute, (route) => false);
+                    // ignore: use_build_context_synchronously
+                    context.read<AuthBloc>().add(
+                          const AuthEventLogOut(),
+                        );
                   }
               }
             },
