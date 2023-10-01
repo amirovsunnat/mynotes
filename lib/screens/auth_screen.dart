@@ -7,6 +7,7 @@ import 'package:mynotes/services/auth/auth_exceptions.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
+import 'package:mynotes/services/auth/bloc/auth_state.dart';
 
 import 'package:mynotes/widgets/square_tile.dart';
 
@@ -280,81 +281,100 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       ],
                                     ),
                                   ),
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      final email = _email.text.trim();
-                                      final password = _password.text.trim();
-
-                                      try {
+                                  child: BlocListener<AuthBloc, AuthState>(
+                                    listener: (context, state) {
+                                      if (state is AuthStateLoggedOut) {
+                                        if (state
+                                            is UserNotFoundAuthException) {
+                                          Flushbar(
+                                            message: "User not found.",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (state
+                                            is WrongPasswordAuthException) {
+                                          //  Flushbar(
+                                          //   message:
+                                          //       "Wrong password or email. Please check your password or email and try again",
+                                          //   duration:
+                                          //       const Duration(seconds: 3),
+                                          //   messageColor: Colors.white,
+                                          //   backgroundColor: Colors.indigo,
+                                          // ).show(context);
+                                        } else if (state
+                                            is InvalidEmailAuthException) {
+                                          Flushbar(
+                                            message:
+                                                "Please enter valid email address",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (state
+                                            is TooManyRequestsAuthException) {
+                                          Flushbar(
+                                            message:
+                                                "Too many sign-in attempts. Please try again later.",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (state
+                                            is UserDisabledAuthException) {
+                                          Flushbar(
+                                            message:
+                                                "User account is disabled.",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (state
+                                            is ChannelErrorAuthException) {
+                                          Flushbar(
+                                            message:
+                                                "Please fill the email and password fields.",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (state
+                                            is GenericAuthExceptions) {
+                                          Flushbar(
+                                            message: "Authentication error.",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        }
+                                      }
+                                    },
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        final email = _email.text.trim();
+                                        final password = _password.text.trim();
                                         context.read<AuthBloc>().add(
                                               AuthEventLogIn(
                                                 email,
                                                 password,
                                               ),
                                             );
-                                      } on UserNotFoundAuthException {
-                                        Flushbar(
-                                          message: "User not found.",
-                                          duration: const Duration(seconds: 3),
-                                          messageColor: Colors.white,
-                                          backgroundColor: Colors.indigo,
-                                        ).show(context);
-                                      } on WrongPasswordAuthException {
-                                        Flushbar(
-                                          message:
-                                              "Wrong password. Please check your password and try again",
-                                          duration: const Duration(seconds: 3),
-                                          messageColor: Colors.white,
-                                          backgroundColor: Colors.indigo,
-                                        ).show(context);
-                                      } on InvalidEmailAuthException {
-                                        Flushbar(
-                                          message:
-                                              "Please enter valid email address",
-                                          duration: const Duration(seconds: 3),
-                                          messageColor: Colors.white,
-                                          backgroundColor: Colors.indigo,
-                                        ).show(context);
-                                      } on TooManyRequestsAuthException {
-                                        Flushbar(
-                                          message:
-                                              "Too many sign-in attempts. Please try again later.",
-                                          duration: const Duration(seconds: 3),
-                                          messageColor: Colors.white,
-                                          backgroundColor: Colors.indigo,
-                                        ).show(context);
-                                      } on UserDisabledAuthException {
-                                        Flushbar(
-                                          message: "User account is disabled.",
-                                          duration: const Duration(seconds: 3),
-                                          messageColor: Colors.white,
-                                          backgroundColor: Colors.indigo,
-                                        ).show(context);
-                                      } on ChannelErrorAuthException {
-                                        Flushbar(
-                                          message:
-                                              "Please fill the email and password fields.",
-                                          duration: const Duration(seconds: 3),
-                                          messageColor: Colors.white,
-                                          backgroundColor: Colors.indigo,
-                                        ).show(context);
-                                      } on GenericAuthExceptions {
-                                        Flushbar(
-                                          message: "Authentication error.",
-                                          duration: const Duration(seconds: 3),
-                                          messageColor: Colors.white,
-                                          backgroundColor: Colors.indigo,
-                                        ).show(context);
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.transparent,
-                                        shadowColor: Colors.transparent),
-                                    child: Text(
-                                      "Sign In",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700),
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.transparent,
+                                          shadowColor: Colors.transparent),
+                                      child: Text(
+                                        "Sign In",
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700),
+                                      ),
                                     ),
                                   ),
                                 ),

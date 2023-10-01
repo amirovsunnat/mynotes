@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 typedef DialogOptionBuilder<T> = Map<String, T?> Function();
 
-Future<T?> showGenericDialog<T>({
+Future<T?> showGenericCustomDialog<T>({
   required BuildContext context,
   required String title,
   required String content,
