@@ -22,16 +22,16 @@ void main() {
               secondary: const Color.fromARGB(255, 5, 255, 13),
             ),
       ),
+      home: BlocProvider<AuthBloc>(
+        create: (context) => AuthBloc(FireBaseAuthProvider()),
+        child: const HomePage(),
+      ),
       routes: {
         authenticationRoute: (context) => const AuthenticationScreen(),
         emailVerificationRoute: (context) => const EmailVerificationScreen(),
         notesRoute: (context) => const NotesScreen(),
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteScreen(),
       },
-      home: BlocProvider<AuthBloc>(
-        create: (context) => AuthBloc(FireBaseAuthProvider()),
-        child: const HomePage(),
-      ),
     ),
   );
 }
@@ -51,12 +51,12 @@ class HomePage extends StatelessWidget {
         } else if (state is AuthStateLoggedOut) {
           return const AuthenticationScreen();
         } else {
-          return const AuthenticationScreen();
-          // Scaffold(
-          //   body: Center(
-          //     child: CircularProgressIndicator(),
-          //   ),
-          // );
+          return Container(
+            color: Colors.white,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
       },
     );

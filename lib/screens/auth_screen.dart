@@ -8,6 +8,7 @@ import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
+import 'package:mynotes/utilities/dialogs/generic_dialog.dart';
 
 import 'package:mynotes/widgets/square_tile.dart';
 
@@ -282,7 +283,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     ),
                                   ),
                                   child: BlocListener<AuthBloc, AuthState>(
-                                    listener: (context, state) {
+                                    listener: (context, state) async {
                                       if (state is AuthStateLoggedOut) {
                                         if (state
                                             is UserNotFoundAuthException) {
@@ -295,6 +296,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                           ).show(context);
                                         } else if (state
                                             is WrongPasswordAuthException) {
+                                          await showGenericCustomDialog(
+                                              context: context,
+                                              title: "title",
+                                              content: "content",
+                                              optionsBuilder: () =>
+                                                  {"Ok": null});
                                           //  Flushbar(
                                           //   message:
                                           //       "Wrong password or email. Please check your password or email and try again",
