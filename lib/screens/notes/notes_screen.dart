@@ -36,6 +36,7 @@ class _NotesScreenState extends State<NotesScreen> {
         backgroundColor: Colors.indigo,
         actions: [
           PopupMenuButton<MenuActions>(
+            padding: const EdgeInsets.all(10),
             itemBuilder: (context) {
               return const [
                 PopupMenuItem<MenuActions>(
@@ -56,7 +57,7 @@ class _NotesScreenState extends State<NotesScreen> {
                   }
               }
             },
-          )
+          ),
         ],
       ),
       body: StreamBuilder(

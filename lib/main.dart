@@ -19,7 +19,7 @@ void main() {
       theme: ThemeData(
         primaryColor: const Color.fromARGB(255, 7, 15, 255),
         colorScheme: ThemeData().colorScheme.copyWith(
-              secondary: const Color.fromARGB(255, 5, 255, 13),
+              secondary: Colors.indigo,
             ),
       ),
       home: BlocProvider<AuthBloc>(

@@ -285,7 +285,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                   child: BlocListener<AuthBloc, AuthState>(
                                     listener: (context, state) async {
                                       if (state is AuthStateLoggedOut) {
-                                        if (state
+                                        if (state.exception
                                             is UserNotFoundAuthException) {
                                           Flushbar(
                                             message: "User not found.",
@@ -294,23 +294,17 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             messageColor: Colors.white,
                                             backgroundColor: Colors.indigo,
                                           ).show(context);
-                                        } else if (state
+                                        } else if (state.exception
                                             is WrongPasswordAuthException) {
-                                          await showGenericCustomDialog(
-                                              context: context,
-                                              title: "title",
-                                              content: "content",
-                                              optionsBuilder: () =>
-                                                  {"Ok": null});
-                                          //  Flushbar(
-                                          //   message:
-                                          //       "Wrong password or email. Please check your password or email and try again",
-                                          //   duration:
-                                          //       const Duration(seconds: 3),
-                                          //   messageColor: Colors.white,
-                                          //   backgroundColor: Colors.indigo,
-                                          // ).show(context);
-                                        } else if (state
+                                          Flushbar(
+                                            message:
+                                                "Wrong password or email. Please check your password or email and try again",
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            messageColor: Colors.white,
+                                            backgroundColor: Colors.indigo,
+                                          ).show(context);
+                                        } else if (state.exception
                                             is InvalidEmailAuthException) {
                                           Flushbar(
                                             message:
@@ -320,7 +314,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             messageColor: Colors.white,
                                             backgroundColor: Colors.indigo,
                                           ).show(context);
-                                        } else if (state
+                                        } else if (state.exception
                                             is TooManyRequestsAuthException) {
                                           Flushbar(
                                             message:
@@ -330,7 +324,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             messageColor: Colors.white,
                                             backgroundColor: Colors.indigo,
                                           ).show(context);
-                                        } else if (state
+                                        } else if (state.exception
                                             is UserDisabledAuthException) {
                                           Flushbar(
                                             message:
@@ -340,7 +334,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             messageColor: Colors.white,
                                             backgroundColor: Colors.indigo,
                                           ).show(context);
-                                        } else if (state
+                                        } else if (state.exception
                                             is ChannelErrorAuthException) {
                                           Flushbar(
                                             message:
@@ -350,7 +344,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                             messageColor: Colors.white,
                                             backgroundColor: Colors.indigo,
                                           ).show(context);
-                                        } else if (state
+                                        } else if (state.exception
                                             is GenericAuthExceptions) {
                                           Flushbar(
                                             message: "Authentication error.",

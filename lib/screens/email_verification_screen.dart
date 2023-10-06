@@ -24,10 +24,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         backgroundColor: Colors.indigo,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              authenticationRoute,
-              (route) => false,
-            );
+            Navigator.of(context).pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
