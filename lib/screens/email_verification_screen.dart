@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
+import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
+import 'package:mynotes/services/auth/bloc/auth_event.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -24,7 +26,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         backgroundColor: Colors.indigo,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            context.read<AuthBloc>().add(const AuthEventLogOut());
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -82,10 +84,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         ),
                       ),
                       child: ElevatedButton(
-                        onPressed: () async {
-                          AuthService.firebase().currentUser;
-
-                          await AuthService.firebase().sendEmailVerification();
+                        onPressed: () {
+                          context
+                              .read<AuthBloc>()
+                              .add(const AuthEventSendEmailVerification());
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,

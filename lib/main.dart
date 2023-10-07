@@ -27,9 +27,6 @@ void main() {
         child: const HomePage(),
       ),
       routes: {
-        authenticationRoute: (context) => const AuthenticationScreen(),
-        emailVerificationRoute: (context) => const EmailVerificationScreen(),
-        notesRoute: (context) => const NotesScreen(),
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteScreen(),
       },
     ),
@@ -49,6 +46,8 @@ class HomePage extends StatelessWidget {
         } else if (state is AuthStateNeedsEmailVerification) {
           return const EmailVerificationScreen();
         } else if (state is AuthStateLoggedOut) {
+          return const AuthenticationScreen();
+        } else if (state is AuthStateRegistering) {
           return const AuthenticationScreen();
         } else {
           return Container(
