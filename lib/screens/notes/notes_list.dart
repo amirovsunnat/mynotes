@@ -27,7 +27,7 @@ class NotesListView extends StatelessWidget {
 
         return Card(
           elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           child: ListTile(
             onTap: () {
               onTap(note);
@@ -35,12 +35,12 @@ class NotesListView extends StatelessWidget {
             contentPadding: const EdgeInsets.all(16),
             title: Text(
               note.text,
-              maxLines: 1,
+              maxLines: 2,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.poppins(
                 fontSize: 14,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
               ),
             ),
             trailing: IconButton(

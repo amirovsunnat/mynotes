@@ -2,7 +2,6 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/services/auth/auth_exceptions.dart';
 import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
@@ -24,7 +23,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   late final TextEditingController _email;
   late final TextEditingController _password;
   bool _isPasswordObscured = true;
-  CloseDialog? _closeDialogHandle;
 
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
@@ -77,16 +75,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateLoggedOut) {
-          final closeDialog = _closeDialogHandle;
-          if (!state.isLoading && closeDialog != null) {
-            closeDialog();
-            _closeDialogHandle = null;
-          } else if (state.isLoading && closeDialog == null) {
-            _closeDialogHandle = showLoadingDialog(
-              context: context,
-              text: "Loading...",
-            );
-          }
+          
+          
           if (state.exception is UserNotFoundAuthException) {
             Flushbar(
               message: "User not found.",
@@ -459,15 +449,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 Center(
                                   child: TextButton(
                                     onPressed: () {
-                                      if (_isLogin) {
-                                        context.read<AuthBloc>().add(
-                                            const AuthEventShouldRegister());
-                                      }
-                                      if (!_isLogin) {
-                                        context
-                                            .read<AuthBloc>()
-                                            .add(const AuthEventLogOut());
-                                      }
                                       setState(
                                         () {
                                           _isLogin = !_isLogin;

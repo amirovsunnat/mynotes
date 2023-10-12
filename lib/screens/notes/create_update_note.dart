@@ -97,7 +97,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.arrow_back_ios_new_outlined)),
+            icon: const Icon(Icons.arrow_back_rounded, size: 20,)),
         title: Text(
           "Add New Notes",
           style: GoogleFonts.poppins(),
@@ -112,7 +112,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
                 ShareExtend.share(text, "text", sharePanelTitle: "My note");
               }
             },
-            icon: const Icon(Icons.share),
+            icon: const Icon(Icons.share, size: 20,),
           ),
         ],
       ),
