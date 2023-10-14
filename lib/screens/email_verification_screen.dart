@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 
@@ -28,7 +27,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           onPressed: () {
             context.read<AuthBloc>().add(const AuthEventLogOut());
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_outlined, size: 20,),
         ),
       ),
       body: Stack(

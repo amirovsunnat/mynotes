@@ -7,6 +7,7 @@ import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/screens/auth_screen.dart';
 import 'package:mynotes/screens/email_verification_screen.dart';
 import 'package:mynotes/screens/notes/notes_screen.dart';
+import 'package:mynotes/screens/send_password_reset_email_screen.dart';
 import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
@@ -57,7 +58,11 @@ class HomePage extends StatelessWidget {
           return const AuthenticationScreen();
         } else if (state is AuthStateRegistering) {
           return const AuthenticationScreen();
-        } else {
+        
+        } else if (state is AuthStateForgotPassword){
+          return const SendPasswordResetEmailScreen();
+        }
+        else {
           return Container(
             color: Colors.white,
             child: const Center(

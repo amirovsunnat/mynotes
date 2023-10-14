@@ -7,7 +7,6 @@ import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
-import 'package:mynotes/utilities/dialogs/loading_dialog.dart';
 
 import 'package:mynotes/widgets/square_tile.dart';
 
@@ -75,11 +74,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthStateLoggedOut) {
-          
-          
           if (state.exception is UserNotFoundAuthException) {
             Flushbar(
-              message: "User not found.",
+              message: "Cannot find a user with the entered credentials.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
               backgroundColor: Colors.indigo,
@@ -188,7 +185,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 100, left: 5, right: 5),
+                  padding: const EdgeInsets.only(top: 100, left: 16, right: 16),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -221,7 +218,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           color: Colors.white,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                top: 20, left: 20, right: 20, bottom: 50),
+                                top: 20, left: 20, right: 20, bottom: 40),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -360,7 +357,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          context.read<AuthBloc>().add(const AuthEventForgotPassword(email: ""));
+                                        },
                                         child: Text(
                                           "Forgot Password?",
                                           style: GoogleFonts.poppins(
@@ -449,7 +448,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 Center(
                                   child: TextButton(
                                     onPressed: () {
+
                                       setState(
+                                        
                                         () {
                                           _isLogin = !_isLogin;
                                         },
