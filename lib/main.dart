@@ -28,10 +28,12 @@ void main() {
         create: (context) => AuthBloc(FireBaseAuthProvider()),
         child: const HomePage(),
       ),
-      routes: {
+          
+        
+         routes: {
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteScreen(),
       },
-    ),
+      ),
   );
 }
 

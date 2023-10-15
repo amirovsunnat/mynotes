@@ -33,7 +33,7 @@ class _NotesScreenState extends State<NotesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Notes"),
-        backgroundColor: Colors.indigo,
+        backgroundColor: const Color.fromRGBO(43, 79, 121, 1),
         actions: [
           PopupMenuButton<MenuActions>(
             padding: const EdgeInsets.all(10),
@@ -94,8 +94,16 @@ class _NotesScreenState extends State<NotesScreen> {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: LinearGradient(
-                              colors: [Colors.indigo, Colors.blueAccent],
-                            ),
+      begin: AlignmentDirectional.centerStart,
+      end: Alignment.centerRight,
+      colors: [
+        Color.fromRGBO(29, 45, 68, 1), 
+        Color.fromRGBO(43, 79, 121, 1), 
+        Color.fromRGBO(86, 132, 186, 1), 
+        Color.fromRGBO(43, 79, 121, 1), 
+        Color.fromRGBO(29, 45, 68, 1),  
+      ],
+    ),
                           ),
                           child: IconButton(
                             onPressed: () {

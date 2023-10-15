@@ -92,7 +92,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
+        backgroundColor: const Color.fromRGBO(43, 79, 121, 1),
         leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -129,6 +129,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
                   controller: _textController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
+                  autofocus: true,
                   decoration: InputDecoration(
                       hintStyle: GoogleFonts.poppins(fontSize: 20),
                       border: InputBorder.none,

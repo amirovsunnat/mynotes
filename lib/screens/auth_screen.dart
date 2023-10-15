@@ -180,7 +180,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                decoration: const BoxDecoration(color: Colors.indigoAccent),
+                decoration: const BoxDecoration(gradient: LinearGradient(
+  begin: AlignmentDirectional.centerStart,
+  end: Alignment.centerRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue
+    Color.fromRGBO(43, 79, 121, 1), // A vibrant blue
+    Color.fromRGBO(86, 132, 186, 1), // A lighter blue
+    Color.fromRGBO(43, 79, 121, 1), // A vibrant blue (repeated)
+    Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue (repeated)
+  ],
+),
+),
               ),
               Align(
                 alignment: Alignment.topCenter,
@@ -194,9 +205,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Image.asset("assets/images/logo.png"),
+                            Image.asset("assets/icon/icon.png", height: 50, color: Colors.white,),
                             const SizedBox(
-                              width: 10,
+                              width: 20,
                             ),
                             Text(
                               'MyNotes',
@@ -208,7 +219,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 50,
                         ),
                         Card(
                           margin: const EdgeInsets.only(top: 10),
@@ -218,7 +229,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           color: Colors.white,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                top: 20, left: 20, right: 20, bottom: 40),
+                                top: 20, left: 20, right: 20, bottom: 60),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -379,11 +390,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5)),
                                       gradient: LinearGradient(
-                                        colors: [
-                                          Colors.indigo,
-                                          Colors.blue,
-                                        ],
-                                      ),
+  begin: AlignmentDirectional.centerStart,
+  end: Alignment.centerRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue
+    Color.fromRGBO(43, 79, 121, 1), // A vibrant blue
+    Color.fromRGBO(86, 132, 186, 1), // A lighter blue
+    Color.fromRGBO(43, 79, 121, 1), // A vibrant blue (repeated)
+    Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue (repeated)
+  ],
+)
+
+
                                     ),
                                     child: ElevatedButton(
                                       onPressed: () async {
@@ -414,11 +432,17 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5)),
                                       gradient: LinearGradient(
-                                        colors: [
-                                          Colors.indigo,
-                                          Colors.blue,
-                                        ],
-                                      ),
+  begin: AlignmentDirectional.centerStart,
+  end: Alignment.centerRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue
+    Color.fromRGBO(43, 79, 121, 1), // A vibrant blue
+    Color.fromRGBO(86, 132, 186, 1), // A lighter blue
+    Color.fromRGBO(43, 79, 121, 1), // A vibrant blue (repeated)
+    Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue (repeated)
+  ],
+)
+
                                     ),
                                     child: ElevatedButton(
                                       onPressed: () async {
@@ -469,8 +493,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                                 ? 'Sign Up'
                                                 : "Sign In",
                                             style: GoogleFonts.poppins(
-                                              color: Colors
-                                                  .indigo, // Set your desired text color for "Sign Up"
+                                              color: const Color.fromRGBO(43, 79, 121, 1),
                                             ),
                                           ),
                                         ],
