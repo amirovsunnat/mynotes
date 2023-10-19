@@ -79,7 +79,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               message: "Cannot find a user with the entered credentials.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is WrongPasswordAuthException) {
             Flushbar(
@@ -87,42 +94,84 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   "Wrong password or email. Please check your password or email and try again",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is InvalidEmailAuthException) {
             Flushbar(
               message: "Please enter valid email address",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is TooManyRequestsAuthException) {
             Flushbar(
               message: "Too many sign-in attempts. Please try again later.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is UserDisabledAuthException) {
             Flushbar(
               message: "User account is disabled.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is ChannelErrorAuthException) {
             Flushbar(
               message: "Please fill the email and password fields.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is GenericAuthExceptions) {
             Flushbar(
               message: "Authentication error.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           }
         }
@@ -132,21 +181,42 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
               message: "Please enter a valid email address.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is EmailAlreadyInUseAuthException) {
             Flushbar(
               message: "Email address is already in use.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is TooManyRequestsAuthException) {
-            Flushbar(
+            Flushbar(backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
               message: "Too many sign-up attempts. Please try again later.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              
             ).show(context);
           } else if (state.exception is WeakPasswordAuthException) {
             Flushbar(
@@ -154,21 +224,42 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   "Password must be at least 6 characters long. Please choose a stronger password",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is ChannelErrorAuthException) {
             Flushbar(
               message: "Please fill the email and password fields.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           } else if (state.exception is GenericAuthExceptions) {
             Flushbar(
               message: "Authentication error.",
               duration: const Duration(seconds: 3),
               messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
+              backgroundGradient: const LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromRGBO(29, 45, 68, 1),
+    Color.fromRGBO(29, 45, 68, 1), 
+  ],
+),
             ).show(context);
           }
         }
