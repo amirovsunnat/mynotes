@@ -1,3 +1,4 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotes/helpers/loading/loading_screen.dart';
@@ -24,12 +25,16 @@ void main() {
               secondary: Colors.indigo,
             ),
       ),
-      home: BlocProvider<AuthBloc>(
+      home: AnimatedSplashScreen(animationDuration: const Duration(seconds: 3),
+      splash: 'assets/icon/icon.png',
+      nextScreen: BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(FireBaseAuthProvider()),
         child: const HomePage(),
       ),
-          
-        
+      splashTransition: SplashTransition.rotationTransition,
+      splashIconSize: 120,
+      
+    ),
          routes: {
         createOrUpdateNoteRoute: (context) => const CreateUpdateNoteScreen(),
       },

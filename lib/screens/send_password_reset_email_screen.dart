@@ -1,11 +1,10 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mynotes/services/auth/bloc/auht_bloc.dart';
 import 'package:mynotes/services/auth/bloc/auth_event.dart';
 import 'package:mynotes/services/auth/bloc/auth_state.dart';
-import 'package:mynotes/utilities/dialogs/generic_dialog.dart';
+import 'package:mynotes/utilities/dialogs/error_message_dialog.dart';
 import 'package:mynotes/utilities/dialogs/send_password_reset_email_dialog.dart';
 
 class SendPasswordResetEmailScreen extends StatefulWidget {
@@ -39,16 +38,17 @@ class _SendPasswordResetEmailScreenState extends State<SendPasswordResetEmailScr
           await showSendPasswordResetEmailDialog(context);
         }
         if (state.exception.toString() == "firebase_auth/invalid-email"){
-          Flushbar(
-              message: "Please enter your email first.",
-              duration: const Duration(seconds: 3),
-              messageColor: Colors.white,
-              backgroundColor: Colors.indigo,
-            ).show(context);
-        } else if (state.exception.toString() == "firebase_auth/user-not-found"){
-          await showGenericCustomDialog(context: context, title: "Cannot send password reset", content: "Please sign up first.", optionsBuilder: ()=>{
-            "OK":null,
-          });
+          return await showErrorMessageDialog(context);
+        //   Flushbar(
+        //       message: "Please enter your email first.",
+        //       duration: const Duration(seconds: 3),
+        //       messageColor: Colors.white,
+        //       backgroundColor: Colors.indigo,
+        //     ).show(context);
+        // } else if (state.exception.toString() == "firebase_auth/user-not-found"){
+        //   await showGenericCustomDialog(context: context, title: "Cannot send password reset", content: "Please sign up first.", optionsBuilder: ()=>{
+        //     "OK":null,
+        //   });
           // Flushbar(
           //     message: "You do not sign up. Please register an account first.",
           //     duration: const Duration(seconds: 3),
@@ -59,19 +59,18 @@ class _SendPasswordResetEmailScreenState extends State<SendPasswordResetEmailScr
       }
     },
     child: Scaffold(
-      appBar: AppBar( backgroundColor: Colors.indigo,
+  backgroundColor: Colors.blue[40],
+      appBar: AppBar( backgroundColor: const Color.fromRGBO(43, 79, 121, 1),
         title: Text("Password Reset", style: GoogleFonts.poppins(), ),
       ),
-      body: Padding(padding: const EdgeInsets.all(16,), child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        
+      body: Padding(padding: const EdgeInsets.only(top: 50, left: 20, right: 20,), child: Column(
         children: [
           Text("Please enter your email address to reset your password.", textAlign: TextAlign.center,style: GoogleFonts.poppins(
             fontSize: 20,
-            
           ),),
-          const SizedBox(height: 60,),
+          const SizedBox(height: 60),
           TextField(
+            cursorColor: const Color.fromRGBO(43, 79, 121, 1),
             controller: _controller,
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
@@ -79,7 +78,7 @@ class _SendPasswordResetEmailScreenState extends State<SendPasswordResetEmailScr
             decoration: InputDecoration(
                                       suffixIcon: const Icon(
                                         Icons.email_outlined,
-
+                                        color:  Color.fromRGBO(43, 79, 121, 1),
                                       ),
                                       hintText: " enter your email here:",
                                       hintStyle: GoogleFonts.poppins(
@@ -100,22 +99,25 @@ class _SendPasswordResetEmailScreenState extends State<SendPasswordResetEmailScr
                                     ),
                                     style: GoogleFonts.poppins(
                                       color: Colors.black,
-                                      fontSize: 14,
-                                      
-                                    ),       
-          ),
-          const SizedBox(height: 50,),
-          Container(
+                                      fontSize: 14,                                                              ),       
+                                    ),
+                                    const SizedBox(height: 50,),
+                                    Container(
                                     width: double.infinity,
                                     decoration: const BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5)),
                                       gradient: LinearGradient(
-                                        colors: [
-                                          Colors.indigo,
-                                          Colors.blue,
-                                        ],
-                                      ),
+                                    begin: AlignmentDirectional.centerStart,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue
+                                      Color.fromRGBO(43, 79, 121, 1), // A vibrant blue
+                                      Color.fromRGBO(86, 132, 186, 1), // A lighter blue
+                                      Color.fromRGBO(43, 79, 121, 1), // A vibrant blue (repeated)
+                                      Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue (repeated)
+                                    ],
+                                  ),
                                     ),
                                     child: ElevatedButton(
                                       onPressed: () async{
@@ -136,7 +138,7 @@ class _SendPasswordResetEmailScreenState extends State<SendPasswordResetEmailScr
                                   const SizedBox(height: 20,),
                                   TextButton(onPressed: (){
                                     context.read<AuthBloc>().add(const AuthEventLogOut());
-                                  }, child:  Text("Go back to log in", style: GoogleFonts.poppins(fontSize: 16),),),
+                                  }, child:  Text("Go back to log in", style: GoogleFonts.poppins(fontSize: 16, color: const Color.fromRGBO(43, 79, 121, 1)),),),
         ],
       ),),
     ),);

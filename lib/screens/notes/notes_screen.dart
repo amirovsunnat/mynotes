@@ -36,7 +36,12 @@ class _NotesScreenState extends State<NotesScreen> {
         backgroundColor: const Color.fromRGBO(43, 79, 121, 1),
         actions: [
           PopupMenuButton<MenuActions>(
-            padding: const EdgeInsets.all(10),
+            icon: const Icon(Icons.more_vert),
+            shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 10,
+            padding: const EdgeInsets.all(5),
             itemBuilder: (context) {
               return const [
                 PopupMenuItem<MenuActions>(

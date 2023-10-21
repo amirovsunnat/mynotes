@@ -532,7 +532,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     Color.fromRGBO(43, 79, 121, 1), // A vibrant blue (repeated)
     Color.fromRGBO(29, 45, 68, 1),  // A deep navy blue (repeated)
   ],
-)
+),
 
                                     ),
                                     child: ElevatedButton(

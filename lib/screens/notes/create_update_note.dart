@@ -97,7 +97,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.arrow_back_rounded, size: 20,)),
+            icon: const Icon(Icons.arrow_back_rounded, size: 24,)),
         title: Text(
           "Add New Notes",
           style: GoogleFonts.poppins(),
@@ -112,7 +112,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
                 ShareExtend.share(text, "text", sharePanelTitle: "My note");
               }
             },
-            icon: const Icon(Icons.share, size: 20,),
+            icon: const Icon(Icons.share, size: 24,),
           ),
         ],
       ),
@@ -125,6 +125,7 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
               return Padding(
                 padding: const EdgeInsets.all(15),
                 child: TextField(
+                  cursorColor: const Color.fromRGBO(43, 79, 121, 1),
                   style: GoogleFonts.poppins(fontSize: 18),
                   controller: _textController,
                   keyboardType: TextInputType.multiline,
