@@ -25,7 +25,7 @@ void main() {
               secondary: Colors.indigo,
             ),
       ),
-      home: AnimatedSplashScreen(animationDuration: const Duration(seconds: 3),
+      home: AnimatedSplashScreen(animationDuration: const Duration(seconds: 2),duration: 3,
       splash: 'assets/icon/icon.png',
       nextScreen: BlocProvider<AuthBloc>(
         create: (context) => AuthBloc(FireBaseAuthProvider()),
